@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;

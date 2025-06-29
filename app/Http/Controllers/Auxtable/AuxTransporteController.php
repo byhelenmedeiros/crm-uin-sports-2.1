@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
-use App\Models\Aux\AuxTransporte;
+use App\Models\Auxtable\AuxTransporte;
 use Illuminate\Http\Request;
 
 class AuxTransporteController extends Controller

@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
-use App\Models\Aux\AuxZonaComercial;
+use App\Models\Auxtable\AuxZonaComercial;
 use Illuminate\Http\Request;
 
 class AuxZonaComercialController extends Controller

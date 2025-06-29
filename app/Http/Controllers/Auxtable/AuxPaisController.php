@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Aux\AuxPais;
+use App\Models\Auxtable\AuxPais;
 
 class AuxPaisController extends Controller
 {

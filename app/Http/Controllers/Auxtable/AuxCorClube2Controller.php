@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
-use App\Models\Aux\AuxCorClube2;
+use App\Models\Auxtable\AuxCorClube2;
 use Illuminate\Http\Request;
 
 class AuxCorClube2Controller extends Controller

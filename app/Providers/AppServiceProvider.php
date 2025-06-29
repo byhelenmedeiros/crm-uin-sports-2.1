@@ -2,19 +2,19 @@
 
 namespace App\Providers;
 
-use App\Models\Aux\AuxCidade;
-use App\Models\Aux\AuxCorClube1;
-use App\Models\Aux\AuxCorClube2;
-use App\Models\Aux\AuxCorClube3;
-use App\Models\Aux\AuxDistrito;
-use App\Models\Aux\AuxEscalao;
-use App\Models\Aux\AuxModalidade;
-use App\Models\Aux\AuxPadrao;
-use App\Models\Aux\AuxPais;
-use App\Models\Aux\AuxPagamento;
+use App\Models\Auxtable\AuxCidade;
+use App\Models\Auxtable\AuxCorClube1;
+use App\Models\Auxtable\AuxCorClube2;
+use App\Models\Auxtable\AuxCorClube3;
+use App\Models\Auxtable\AuxDistrito;
+use App\Models\Auxtable\AuxEscalao;
+use App\Models\Auxtable\AuxModalidade;
+use App\Models\Auxtable\AuxPadrao;
+use App\Models\Auxtable\AuxPais;
+use App\Models\Auxtable\AuxPagamento;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Aux\AuxModalidadePagamento;
+use App\Models\Auxtable\AuxModalidadePagamento;
 
 class AppServiceProvider extends ServiceProvider
 {

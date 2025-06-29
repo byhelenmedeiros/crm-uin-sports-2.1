@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Aux\AuxPadrao;
+use App\Models\Auxtable\AuxPadrao;
 
 class AuxPadraoController extends Controller
 {

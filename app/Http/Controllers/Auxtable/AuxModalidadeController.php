@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Aux\AuxModalidade;
+use App\Models\Auxtable\AuxModalidade;
 
 class AuxModalidadeController extends Controller
 {

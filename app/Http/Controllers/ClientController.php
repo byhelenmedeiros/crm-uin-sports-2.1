@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClientRequest;
-use App\Models\Aux\AuxTransporte;
+use App\Models\Auxtable\AuxTransporte;
 use App\Models\Client;
 use App\Models\ClientGroup;
 use App\Models\CrmAddressType;

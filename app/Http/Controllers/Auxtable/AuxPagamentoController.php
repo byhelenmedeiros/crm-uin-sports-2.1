@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
-use App\Models\Aux\AuxPagamento;
+use App\Models\Auxtable\AuxPagamento;
 use Illuminate\Http\Request;
 
 class AuxPagamentoController extends Controller

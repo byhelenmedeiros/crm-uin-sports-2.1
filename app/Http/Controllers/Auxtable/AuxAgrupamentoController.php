@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
 
 use App\Http\Controllers\Controller;
-use App\Models\Aux\AuxAgrupamento;
-use App\Models\Aux\AuxGrupoCliente;
+use App\Models\Auxtable\AuxAgrupamento;
+use App\Models\Auxtable\AuxGrupoCliente;
 use Illuminate\Http\Request;
 
 class AuxAgrupamentoController extends Controller

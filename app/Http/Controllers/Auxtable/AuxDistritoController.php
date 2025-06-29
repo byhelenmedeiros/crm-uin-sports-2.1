@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Aux;
+namespace App\Http\Controllers\Auxtable;
+
 
 use App\Http\Controllers\Controller;
-use App\Models\Aux\AuxDistrito;
+use App\Models\Auxtable\AuxDistrito;
 use Illuminate\Http\Request;
 
 class AuxDistritoController extends Controller
