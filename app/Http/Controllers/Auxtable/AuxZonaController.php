@@ -24,16 +24,17 @@ class AuxZonaController extends Controller
     /**
      * Formulário de criação.
      */
-    public function create()
-    {
-        // carrega apenas zonas para o select de topo
-        $zones = AuxZona::zones()
-            ->orderBy('external_id')
-            ->get();
+ public function create()
+{
+    // busca só as Zonas (type = 'zone') com os filhos de dois níveis já prontos
+     $zones = AuxZona::with('children.children')
+             ->where('type','zone')
+             ->orderBy('external_id')
+             ->get();
 
-        return view('auxtable.zonas.create', compact('zones'));
-    }
-
+    dd($zones);  
+    return view('auxtable.zonas.index', compact('zones'));
+}
     /**
      * Armazena nova zona/comercial/vendor.
      */

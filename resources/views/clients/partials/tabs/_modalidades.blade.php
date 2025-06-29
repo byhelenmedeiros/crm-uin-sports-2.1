@@ -147,7 +147,7 @@
         </div>
 
         {{-- Responsáveis --}}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-1 gap-2">
         {{-- Responsáveis (2), usando só Alpine --}}
 <div class="space-y-4">
   <template x-for="r in [1,2]" :key="r">

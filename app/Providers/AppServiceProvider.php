@@ -18,6 +18,8 @@ use App\Models\Auxtable\AuxModalidadePagamento;
 use App\Models\Auxtable\AuxTransporte;
 use App\Models\CrmAddressType;
 use App\Models\Auxtable\AuxGrupoCliente;
+use App\Models\Auxtable\AuxZona;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -56,10 +58,8 @@ class AppServiceProvider extends ServiceProvider
         ->orderBy('external_id')
         ->get(['id','name','external_id','parent_id'])
     );
-                
+        View::share('auxZonas', AuxZona::with('children.children')->where('type','zone')->get());
 
-
-        
 
 
     }
