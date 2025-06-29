@@ -47,12 +47,16 @@ class ClientController extends Controller
 
         // tipos de endereço, grupos, zonas e vendedores
         $addressTypes = CrmAddressType::all(['id', 'name']);
-        $clientGroups = ClientGroup::orderBy('id')->get();
+       //$clientGroups = ClientGroup::with('children')
+         //              ->whereNull('parent_id')
+           //            ->orderBy('external_id')
+             //          ->get(['id','name','external_id','parent_id']);
+
           $zones            = Zone::all();
         $comercial_zones  = ComercialZone::all();
         $vendors          = Vendor::all();
 
-        return view('clients.create', compact('zones', 'comercial_zones', 'vendors'));
+        return view('clients.create', compact( 'addressTypes', 'zones', 'comercial_zones', 'vendors'));
 
         // transportes completos e mapeamento external_id => name
         $aux_transportes          = AuxTransporte::all(['id', 'external_id', 'name']);
@@ -117,14 +121,21 @@ class ClientController extends Controller
             ]);
 
             // cria os endereços
-            foreach ($data['addresses'] as $addr) {
+          if (!empty($request->input('addresses'))) {
+            foreach ($request->input('addresses') as $addr) {
                 $client->addresses()->create([
-                    'addressable_type'   => Client::class,
-                    'addressable_id'     => $client->id,
-                    'address_type_id'    => $addr['address_type_id'],
-                    'address'            => $addr['address'],
-                    'user_created_id'    => auth()->id(),
-                    'user_updated_id'    => auth()->id(),
+                    'address_type_id'   => $addr['address_type_id'],
+                    'external_id'       => $addr['external_id']       ?? null,
+                    'address'           => $addr['address']           ?? null,
+                    'line2'             => $addr['line2']             ?? null,
+                    'line3'             => $addr['line3']             ?? null,
+                    'code'              => $addr['code']              ?? null,
+                    'country_id'        => $addr['country_id']        ?? null,
+                    'state_id'          => $addr['state_id']          ?? null,
+                    'city_id'           => $addr['city_id']           ?? null,
+                    'primary'           => $addr['primary'] ?? 0,      // se usar esse campo
+                    'user_created_id'   => auth()->id(),
+                    'user_updated_id'   => auth()->id(),
                 ]);
             }
 
@@ -146,7 +157,8 @@ class ClientController extends Controller
             return redirect()
                 ->route('clients.index')
                 ->with('success', 'Cliente criado com sucesso!');
-        } catch (\Exception $e) {
+        }
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error('Erro ao criar cliente: ' . $e->getMessage());
             return redirect()->back()->withErrors('Erro ao criar cliente');

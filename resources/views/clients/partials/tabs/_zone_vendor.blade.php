@@ -4,7 +4,7 @@
   class="space-y-4"
 >
   {{-- External ID e Código Postal --}}
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="grid grid-cols-6 md:grid-cols-6 gap-4">
     <div class="form-control">
       <label class="label"><span class="label-text text-sm">External ID</span></label>
       <input
@@ -26,7 +26,7 @@
   </div>
 
   {{-- Selects --}}
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <div class="grid grid-cols-6 md:grid-cols-6 gap-4">
     {{-- Zona --}}
     <div class="form-control">
       <label class="label"><span class="label-text text-sm">Zona</span></label>

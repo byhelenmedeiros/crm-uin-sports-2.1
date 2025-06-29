@@ -20,7 +20,7 @@
               //  ['label' => 'Zonas Comerciais', 'route' => 'aux.zona-comercials.index', 'icon' => 'fas fa-store'],
                // ['label' => 'Zonas',            'route' => 'aux.zonas.index',           'icon' => 'fas fa-map-marker-alt'],
                // ['label' => 'Vendedores',       'route' => 'aux.vendedores.index',      'icon' => 'fas fa-user-tie'],
-                ['label' => 'Agrupamentos',     'route' => 'aux.agrupamentos.index',    'icon' => 'fas fa-sitemap'],
+              //  ['label' => 'Agrupamentos',     'route' => 'aux.agrupamentos.index',    'icon' => 'fas fa-sitemap'],
                 ['label' => 'Grupos de Clientes','route'=> 'aux.grupo-clientes.index',  'icon' => 'fas fa-users'],
                 ['label' => 'Cor Clube 1',      'route' => 'aux.cor-clube-1.index',     'icon' => 'fas fa-palette'],
                 ['label' => 'Cor Clube 2',      'route' => 'aux.cor-clube-2.index',     'icon' => 'fas fa-palette'],

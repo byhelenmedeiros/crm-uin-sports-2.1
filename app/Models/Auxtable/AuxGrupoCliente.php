@@ -2,23 +2,37 @@
 
 namespace App\Models\Auxtable;
 
-
+use App\Models\Client;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
- class AuxGrupoCliente extends Model
-{
-    protected $table = 'aux_grupo_clientes';
 
-    protected $fillable = [
-        'external_id',
-        'name',
-        'active',
-    ];
+class AuxGrupoCliente extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['name','external_id','parent_id'];
 
     /**
-     * 1 Grupo → N Agrupamentos
+     * Um grupo pode ter várias subdivisões
      */
-    public function agrupamentos()
+
+       public function parent()
     {
-        return $this->hasMany(AuxAgrupamento::class, 'aux_grupo_cliente_id');
+        return $this->belongsTo(self::class, 'parent_id');
     }
+
+    public function children()
+    {
+        return $this->hasMany(self::class, 'parent_id');
+    }
+
+
+    /**
+     * Um grupo pode ter vários clientes
+     */
+    public function clients()
+    {
+        return $this->hasMany(Client::class, 'client_group_id');
+    }
+    
 }

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Auxtable\AuxModalidadePagamento;
 use App\Models\Auxtable\AuxTransporte;
+use App\Models\CrmAddressType;
+use App\Models\Auxtable\AuxGrupoCliente;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,6 +47,17 @@ class AppServiceProvider extends ServiceProvider
         View::share('auxPagamento', AuxPagamento::select('id', 'name')->orderBy('name')->get());
         View::share('auxModalidadePagamento', AuxModalidadePagamento::select('id', 'name')->orderBy('name')->get()); 
         View::share('auxTransportes', AuxTransporte::select('id', 'external_id', 'name')->orderBy('name')->get());
+                View::share('addressTypes', CrmAddressType::all(['id','name']));
+        //aux grupo_clientes
+      View::share(
+      'auxGrupoClientes',         
+      AuxGrupoCliente::with('children')
+        ->whereNull('parent_id')
+        ->orderBy('external_id')
+        ->get(['id','name','external_id','parent_id'])
+    );
+                
+
 
         
 
