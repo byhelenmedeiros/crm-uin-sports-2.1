@@ -2,7 +2,7 @@
 
  
 
-namespace App\Models\Aux;
+namespace App\Models\Auxtable;
 
 use Illuminate\Database\Eloquent\Model;
 
