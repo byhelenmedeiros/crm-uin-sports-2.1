@@ -6,6 +6,7 @@ use App\Http\Requests\StoreClientRequest;
 use App\Models\Auxtable\AuxTransporte;
 use App\Models\Client;
 use App\Models\ClientGroup;
+use App\Models\ComercialZone;
 use App\Models\CrmAddressType;
 use App\Models\CrmAddress;
 use App\Models\Pagamento;
@@ -47,8 +48,11 @@ class ClientController extends Controller
         // tipos de endereço, grupos, zonas e vendedores
         $addressTypes = CrmAddressType::all(['id', 'name']);
         $clientGroups = ClientGroup::orderBy('id')->get();
-        $zones        = Zone::orderBy('external_id')->get(['id', 'external_id', 'name']);
-        $vendors      = Vendor::orderBy('external_id')->get(['id', 'external_id', 'name']);
+          $zones            = Zone::all();
+        $comercial_zones  = ComercialZone::all();
+        $vendors          = Vendor::all();
+
+        return view('clients.create', compact('zones', 'comercial_zones', 'vendors'));
 
         // transportes completos e mapeamento external_id => name
         $aux_transportes          = AuxTransporte::all(['id', 'external_id', 'name']);

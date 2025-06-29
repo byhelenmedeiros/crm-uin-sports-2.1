@@ -5,7 +5,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Foundation\Application;
-use App\Http\Controllers\aux\AuxDataController;
+use App\Http\Controllers\auxtable\AuxDataController;
+use App\Http\Controllers\PostalZoneMappingController;
 
 Route::get('/', function () {
     return view('dashboard.welcome', [
@@ -35,9 +36,9 @@ Route::middleware(['auth', 'verified'])
         })->name('dashboard');
     });
 
-    Route::resource('clients.modalidades', CrmModalidadeController::class)
-     ->shallow()
-     ->parameters(['clients' => 'client', 'modalidades' => 'modalidade']);
+Route::resource('clients.modalidades', CrmModalidadeController::class)
+    ->shallow()
+    ->parameters(['clients' => 'client', 'modalidades' => 'modalidade']);
 
 
 
@@ -56,11 +57,14 @@ Route::middleware('auth')->group(function () {
 });
 
 
+
 Route::get('/auxdata', [AuxDataController::class, 'types'])->name('auxtables.types.index');
+
+Route::get('postal-zone', [PostalZoneMappingController::class, 'show']);
 
 
 // Modularização das rotas
-require __DIR__.'/auth.php';
-require __DIR__.'/modules/users.php';
-require __DIR__.'/modules/clients.php';
-require __DIR__.'/modules/aux-data.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/modules/users.php';
+require __DIR__ . '/modules/clients.php';
+require __DIR__ . '/modules/aux-data.php';
