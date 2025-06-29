@@ -12,7 +12,7 @@ class CrmModalidade extends Model
 
     protected $table = 'crm_modalidades';
 
-    protected $fillable = [
+    protected $fillable = array_merge([
         'crm_client_id',
         'external_id',
         'name',
@@ -25,25 +25,23 @@ class CrmModalidade extends Model
         'contrato_inicio',
         'contrato_fim',
         'contrato_renegociacao',
-        'responsavel_nome_1',
-        'responsavel_cargo_1',
-        'responsavel_email_1',
-        'responsavel_telemovel_1',
-        'responsavel_nome_2',
-        'responsavel_cargo_2',
-        'responsavel_email_2',
-        'responsavel_telemovel_2',
-        'recebe_email_orcamentos',
-        'recebe_email_encomendas',
-        'recebe_email_faturas',
-        'recebe_email_campanhas',
         'pack_medio',
         'pack_frequencia_inicio',
         'previsao_ano1',
         'previsao_ano2',
         'notas_modalidade',
         'documentos', // ← novo
-    ];
+    ], collect(range(1, 2))->flatMap(fn($i) => [
+        "responsavel{$i}_nome",
+        "responsavel{$i}_cargo",
+        "responsavel{$i}_email",
+        "responsavel{$i}_telemovel",
+        "responsavel{$i}_email_orcamentos",
+        "responsavel{$i}_email_encomendas",
+        "responsavel{$i}_email_faturas",
+        "responsavel{$i}_email_campanhas",
+    ])->toArray());
+    
 
     protected $casts = [
         'marca_inicio'            => 'date',

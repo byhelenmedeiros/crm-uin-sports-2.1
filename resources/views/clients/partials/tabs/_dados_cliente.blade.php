@@ -8,7 +8,7 @@
         name="external_id"
         id="external_id"
         value="{{ old('external_id') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('external_id') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>
@@ -20,13 +20,13 @@
         name="nif"
         id="nif"
         value="{{ old('nif') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('nif') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
     {{-- Nome --}}
     <div class="form-control w-full">
       <label for="name" class="label"><span class="label-text text-sm">Nome</span></label>
@@ -35,7 +35,7 @@
         name="name"
         id="name"
         value="{{ old('name') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('name') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>
@@ -47,7 +47,7 @@
         name="telefone4"
         id="telefone4"
         value="{{ old('telefone4') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('telefone4') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>
@@ -61,7 +61,7 @@
   </label>
   <select name="transporte_id"
           id="transporte_id"
-          class="select select-sm select-bordered w-full">
+          class="select select-xs select-bordered w-full">
     <option value="">—</option>
     @foreach($aux_transportes as $t)
       <option value="{{ $t->id }}"
@@ -84,7 +84,7 @@
   <select
     name="pagamento"
     id="pagamento"
-    class="select select-sm select-bordered w-full"
+    class="select select-xs select-bordered w-full"
   >
     <option value="">Selecione</option>
     @foreach($auxPagamento as $pag)
@@ -106,7 +106,7 @@
   <select
     name="modalidade_pagamento_id"
     id="modalidade_pagamento_id"
-    class="select select-sm select-bordered w-full"
+    class="select select-xs select-bordered w-full"
   >
     <option value="">Selecione</option>
     @foreach($auxModalidadePagamento as $pag)
@@ -131,7 +131,7 @@
     name="preco"
     id="preco"
     value="{{ old('preco') }}"
-    class="input input-sm input-bordered w-full"
+    class="input input-xs input-bordered w-full"
   />
   @error('preco')
     <span class="text-error text-xs">{{ $message }}</span>
@@ -147,7 +147,7 @@
         id="desconto_linha"
         step="0.01"
         value="{{ old('desconto_linha') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('desconto_linha') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>
@@ -160,7 +160,7 @@
         id="desconto_global"
         step="0.01"
         value="{{ old('desconto_global') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('desconto_global') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>
@@ -172,7 +172,7 @@
         name="url"
         id="url"
         value="{{ old('url') }}"
-        class="input input-sm input-bordered w-full"
+        class="input input-xs input-bordered w-full"
       />
       @error('url') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>

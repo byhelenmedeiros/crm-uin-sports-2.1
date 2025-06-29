@@ -58,18 +58,6 @@ class CrmModalidadeController extends Controller
                 'contrato_inicio'         => 'nullable|date',
                 'contrato_fim'            => 'nullable|date|after_or_equal:contrato_inicio',
                 'contrato_renegociacao'   => 'nullable|date|after_or_equal:contrato_fim',
-                'responsavel_nome_1'      => 'nullable|string|max:255',
-                'responsavel_cargo_1'     => 'nullable|string|max:255',
-                'responsavel_email_1'     => 'nullable|email|max:255',
-                'responsavel_telemovel_1' => 'nullable|string|max:50',
-                'responsavel_nome_2'      => 'nullable|string|max:255',
-                'responsavel_cargo_2'     => 'nullable|string|max:255',
-                'responsavel_email_2'     => 'nullable|email|max:255',
-                'responsavel_telemovel_2' => 'nullable|string|max:50',
-                'recebe_email_orcamentos' => 'boolean',
-                'recebe_email_encomendas' => 'boolean',
-                'recebe_email_faturas'    => 'boolean',
-                'recebe_email_campanhas'  => 'boolean',
                 'pack_medio'              => 'nullable|numeric|min:0',
                 'pack_frequencia_inicio'  => 'nullable|date',
                 'previsao_ano1'           => 'nullable|integer',
@@ -129,18 +117,6 @@ class CrmModalidadeController extends Controller
             'contrato_inicio'         => 'nullable|date',
             'contrato_fim'            => 'nullable|date|after_or_equal:contrato_inicio',
             'contrato_renegociacao'   => 'nullable|date|after_or_equal:contrato_fim',
-            'responsavel_nome_1'      => 'nullable|string|max:255',
-            'responsavel_cargo_1'     => 'nullable|string|max:255',
-            'responsavel_email_1'     => 'nullable|email|max:255',
-            'responsavel_telemovel_1' => 'nullable|string|max:50',
-            'responsavel_nome_2'      => 'nullable|string|max:255',
-            'responsavel_cargo_2'     => 'nullable|string|max:255',
-            'responsavel_email_2'     => 'nullable|email|max:255',
-            'responsavel_telemovel_2' => 'nullable|string|max:50',
-            'recebe_email_orcamentos' => 'boolean',
-            'recebe_email_encomendas' => 'boolean',
-            'recebe_email_faturas'    => 'boolean',
-            'recebe_email_campanhas'  => 'boolean',
             'pack_medio'              => 'nullable|numeric|min:0',
             'pack_frequencia_inicio'  => 'nullable|date',
             'previsao_ano1'           => 'nullable|integer',
@@ -149,7 +125,27 @@ class CrmModalidadeController extends Controller
             'documentos'              => 'nullable|array',
             'new_files'               => 'array',
             'new_files.*'             => 'file|mimes:pdf,jpg,jpeg|max:5120',
+              'responsaveis'           => ['array', 'size:2'],
+    'responsaveis.*.nome'    => ['nullable', 'string', 'max:255'],
+    'responsaveis.*.cargo'   => ['nullable', 'string', 'max:255'],
+    'responsaveis.*.email'   => ['nullable', 'email', 'max:255'],
+    'responsaveis.*.telemovel' => ['nullable', 'string', 'max:20'],
+    'responsaveis.*.email_orcamentos' => ['nullable', 'email', 'max:255'],
+    'responsaveis.*.email_encomendas' => ['nullable', 'email', 'max:255'],
+    'responsaveis.*.email_faturas' => ['nullable', 'email', 'max:255'],
+    'responsaveis.*.email_campanhas' => ['nullable', 'email', 'max:255'],
         ]);
+
+        $data = $request->only(['responsaveis']);
+$flat = [];
+foreach ($data['responsaveis'] as $i => $resp) {
+    $idx = $i + 1;
+    foreach ($resp as $key => $value) {
+        $flat["responsavel{$idx}_{$key}"] = $value;
+    }
+}
+
+$modalidade->fill($flat)->save();
 
         // mescla novos uploads ao array existente
         $paths = $modalidade->documentos ?? [];

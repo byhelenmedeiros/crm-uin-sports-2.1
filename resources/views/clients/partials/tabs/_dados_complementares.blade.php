@@ -1,9 +1,9 @@
 <section class="space-y-4">
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
         {{--  nome presidente --}}
     <div class="form-control w-full">
       <label for="nome_presidente" class="label">
-        <span class="label-text text-sm">Nome Presidente</span>
+        <span class="label-text  text-sm">Nome Presidente</span>
       </label>
       <input
         type="text"
@@ -69,6 +69,8 @@
       />
       @error('telemovel_presidente') <span class="text-error text-xs">{{ $message }}</span> @enderror
     </div>  
+    <div>
+    </div>
     <div class="form-control w-full">
       <label for="marca_clube_inicio" class="label">
         <span class="label-text text-sm">Marca Clube Início</span>
@@ -183,7 +185,7 @@
     @endforeach
   </div>
 
- <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+ <div class="grid grid-cols-2 md:grid-cols-8 gap-4">
   {{-- Padrão --}}
   <div class="form-control w-full">
     <label for="padrao_clube" class="label">
@@ -206,7 +208,6 @@
     @enderror
   </div>
 
-<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
   {{-- Cor Clube 1 --}}
   <div class="form-control w-full">
     <label for="cor_clube_1" class="label"><span class="label-text text-sm">Cor Clube 1</span></label>
@@ -247,7 +248,7 @@
       @endforeach
     </select>
     @error('cor_clube_3') <span class="text-error text-xs">{{ $message }}</span> @enderror
-  </div>
+
 </div>
 
 </div>
