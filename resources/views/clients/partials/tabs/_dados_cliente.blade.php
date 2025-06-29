@@ -63,7 +63,7 @@
           id="transporte_id"
           class="select select-xs select-bordered w-full">
     <option value="">—</option>
-    @foreach($aux_transportes as $t)
+    @foreach($auxTransportes  as $t)
       <option value="{{ $t->id }}"
         @selected(old('transporte_id') == $t->id)>
         {{-- concatena external_id e name --}}

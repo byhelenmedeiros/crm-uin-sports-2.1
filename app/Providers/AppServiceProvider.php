@@ -15,6 +15,7 @@ use App\Models\Auxtable\AuxPagamento;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Auxtable\AuxModalidadePagamento;
+use App\Models\Auxtable\AuxTransporte;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('auxCidades', AuxCidade::select('id', 'name')->orderBy('name')->get());
         View::share('auxPagamento', AuxPagamento::select('id', 'name')->orderBy('name')->get());
         View::share('auxModalidadePagamento', AuxModalidadePagamento::select('id', 'name')->orderBy('name')->get()); 
+        View::share('auxTransportes', AuxTransporte::select('id', 'external_id', 'name')->orderBy('name')->get());
 
         
 
