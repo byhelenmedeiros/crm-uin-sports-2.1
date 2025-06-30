@@ -1,6 +1,6 @@
 {{-- Grupos de Cliente --}}
 <div x-show="activeTab==='grupos'" class="space-y-4">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
     {{-- Grupo de Cliente --}}
     <div>
       <label class="label"><span class="label-text text-sm">Grupo de Cliente</span></label>

@@ -19,82 +19,36 @@ use Illuminate\Support\Facades\Log;
 
 class ClientController extends Controller
 {
-    public function index(Request $request)
-    {
-        $this->authorize('viewAny', Client::class);
+public function index(Request $request)
+{
+    $this->authorize('viewAny', Client::class);
 
-        $clients = Client::orderBy('name')->get();
+    $search = $request->input('search');
 
-           // Eager-load das relações que vamos exibir
-        $items = Client::with([
-        //    'transporte',            // relação transporte
-          //  'modalidadePagamento',   // relação modalidadePagamento
-        ])
-        ->select([
-            'id',
-            'external_id',               // Número
-            'nif',                       // NIF
-            'name',                      // Nome
-            'responsavel_nome',          // Responsável
-            'telefone4',                 // Telefone
-            'transporte_id',             // Transporte
-            'pagamento',                 // Pagamento
-            'modalidade_pagamento_id',   // Modalidade de Pagamento
-            'preco',                     // Preço
-            'desconto_linha',            // Desconto Linha (%)
-            'desconto_global',           // Desconto Global (%)
-            'url',                       // Website
-            'zone_id',                   // Zona
-            'cliente_desde',             // Cliente Desde
-            'limite_credito',            // Limite de Crédito
-            'notas_gerais',              // Notas Gerais
-            'created_at',
-            'updated_at',
-        ])
-        ->orderBy('name')
-        ->get();
-
-        // Definição das colunas para o data-table (field => label)
-        $columns = [
-            'external_id'              => 'Número',
-            'nif'                      => 'NIF',
-            'name'                     => 'Nome',
-            'responsavel_nome'         => 'Responsável',
-            'telefone4'                => 'Telefone',
-            'transporte.external_id'   => 'Transporte (Código)',
-            'transporte.name'          => 'Transporte',
-            'pagamento'                => 'Pagamento',
-            'modalidadePagamento.name' => 'Modalidade Pagto',
-            'preco'                    => 'Preço',
-            'desconto_linha'           => 'Desconto Linha (%)',
-            'desconto_global'          => 'Desconto Global (%)',
-            'url'                      => 'Website',
-            'zone.name'                => 'Zona',
-            'cliente_desde'            => 'Cliente Desde',
-            'limite_credito'           => 'Limite Crédito',
-            'notas_gerais'             => 'Notas Gerais',
-            'created_at'               => 'Criado Em',
-            'updated_at'               => 'Atualizado Em',
-
-
-        ];
-
-         $search = $request->input('search');
- $query = Client::query()
-        ->select(['id','external_id','nif','name'])
-        ->when($search, fn($q) => $q->where('name','like',"%{$search}%")
-                                    ->orWhere('external_id','like',"%{$search}%")
-                                    ->orWhere('nif','like',"%{$search}%"))
+    // Monta a query básica, já selecionando só os campos que vamos exibir
+    $query = Client::query()
+        ->select(['id', 'external_id', 'name', 'nif'])
+        ->when($search, fn($q) => $q
+            ->where('name', 'like', "%{$search}%")
+            ->orWhere('external_id', 'like', "%{$search}%")
+            ->orWhere('nif', 'like', "%{$search}%")
+        )
         ->orderBy('name');
 
-    $paginated = $query->paginate(15)->withQueryString();
+    // Pagina em 15 por página, mantendo o parâmetro `search` na URL
+    $items = $query->paginate(15)->withQueryString();
 
+    // Se for AJAX, devolve JSON (para uso com Alpine/Livewire se precisar)
     if ($request->ajax()) {
-        return response()->json($paginated);
+        return response()->json($items);
     }
 
-   return view('clients.index', [
-        'items'   => $paginated,
+    // Para a view blade, passamos:
+    // - items: o LengthAwarePaginator
+    // - columns: campo => rótulo
+    // - search: valor atual do filtro
+    return view('clients.index', [
+        'items'   => $items,
         'columns' => [
             'external_id' => 'Número',
             'name'        => 'Nome',
@@ -103,6 +57,7 @@ class ClientController extends Controller
         'search'  => $search,
     ]);
 }
+
     /**
      * Exibe o formulário de criação de um novo cliente.
      *
