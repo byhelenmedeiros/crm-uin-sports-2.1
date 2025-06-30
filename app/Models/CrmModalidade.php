@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 
 class CrmModalidade extends Model
 {
@@ -12,7 +13,10 @@ class CrmModalidade extends Model
 
     protected $table = 'crm_modalidades';
 
-    protected $fillable = array_merge([
+    /**
+     * Campos fixos que podem ser preenchidos em massa.
+     */
+    protected $fillable = [
         'crm_client_id',
         'external_id',
         'name',
@@ -29,19 +33,13 @@ class CrmModalidade extends Model
         'pack_frequencia_inicio',
         'previsao_ano1',
         'previsao_ano2',
+        'recebe_email_orcamentos',
+        'recebe_email_encomendas',
+        'recebe_email_faturas',
+        'recebe_email_campanhas',
         'notas_modalidade',
         'documentos', // ← novo
-    ], collect(range(1, 2))->flatMap(fn($i) => [
-        "responsavel{$i}_nome",
-        "responsavel{$i}_cargo",
-        "responsavel{$i}_email",
-        "responsavel{$i}_telemovel",
-        "responsavel{$i}_email_orcamentos",
-        "responsavel{$i}_email_encomendas",
-        "responsavel{$i}_email_faturas",
-        "responsavel{$i}_email_campanhas",
-    ])->toArray());
-    
+    ];
 
     protected $casts = [
         'marca_inicio'            => 'date',
@@ -59,14 +57,42 @@ class CrmModalidade extends Model
         'recebe_email_encomendas' => 'boolean',
         'recebe_email_faturas'    => 'boolean',
         'recebe_email_campanhas'  => 'boolean',
-        'documentos'              => 'array',   // ← novo
+        'documentos'              => 'array',
     ];
 
     protected static function booted()
     {
-        static::creating(function (CrmModalidade $m) {
-            $m->external_id = (string) Str::uuid();
+        // Geração automática de UUID
+        static::creating(function (CrmModalidade $model) {
+            $model->external_id = (string) Str::uuid();
         });
+
+        // Adiciona em runtime os campos de responsáveis
+        static::retrieved(function (CrmModalidade $model) {
+            $dynamicFields = collect(range(1, 2))->flatMap(function ($i) {
+                return [
+                    "responsavel{$i}_nome",
+                    "responsavel{$i}_cargo",
+                    "responsavel{$i}_email",
+                    "responsavel{$i}_telemovel",
+                    "responsavel{$i}_email_orcamentos",
+                    "responsavel{$i}_email_encomendas",
+                    "responsavel{$i}_email_faturas",
+                    "responsavel{$i}_email_campanhas",
+                ];
+            })->toArray();
+
+            // Mescla apenas uma vez
+            $model->mergeFillable($dynamicFields);
+        });
+    }
+
+    /**
+     * Helper para mesclar campos em $fillable sem redeclará-lo diretamente.
+     */
+    public function mergeFillable(array $fields)
+    {
+        $this->fillable = array_merge($this->fillable, $fields);
     }
 
     public function client()

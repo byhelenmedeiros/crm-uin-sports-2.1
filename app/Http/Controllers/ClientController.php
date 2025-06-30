@@ -169,7 +169,7 @@ class ClientController extends Controller
     {
         $client = Client::with([
             'addresses.addressType',
-            'clientGroup',
+            //'clientGroup',
             'groupSubdivision',
 
         ])->findOrFail($id);
