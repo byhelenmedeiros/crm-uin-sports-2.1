@@ -19,7 +19,8 @@ use App\Http\Controllers\Auxtable\{
     AuxCorClube2Controller,
     AuxCorClube3Controller,
     AuxPadraoController,
-    AuxModalidadePagamentoController
+    AuxModalidadePagamentoController,
+    AuxPrecoController
 };
 
 $auxResources = [
@@ -41,6 +42,7 @@ $auxResources = [
     'padroes'         => AuxPadraoController::class,
     'agrupamento'    => AuxAgrupamentoController::class,
     'modalidadepagamento' => AuxModalidadePagamentoController::class,
+    'preco'           =>  AuxPrecoController::class,
 ];
 
 Route::get('aux-grupo-clientes/{group}/subdivisions', [AuxGrupoClienteController::class, 'subdivisions']);
