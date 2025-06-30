@@ -176,8 +176,8 @@ class ClientController extends Controller
 
         $client->load([
             'addresses.addressType',
-            'clientGroup',
-            'groupSubdivision',
+        //    'clientGroup',
+          //  'groupSubdivision',
             'zone',
             'vendor',
             'modalidades',

@@ -119,10 +119,10 @@
             @endforeach
           </select>
         </div>
-          <div class="form-control">
+     {{--  <div class="form-control">
           <label class="label"><span class="label-text text-sm">External ID</span></label>
           <input type="text" name="addresses[__INDEX__][external_id]" class="input input-sm input-bordered w-full" />
-        </div>
+        </div>--}}     
         <div class="form-control">
           <label class="label"><span class="label-text text-sm">Morada</span></label>
           <input type="text" name="addresses[__INDEX__][address]" class="input input-sm input-bordered w-full" />
@@ -162,7 +162,7 @@
         <div class="form-control">
           <label class="label"><span class="label-text text-sm">Cidade</span></label>
           <select name="addresses[__INDEX__][city_id]" class="select select-sm w-full">
-            <option value="">— selecione —</option>
+            <option value="">Selecione</option>
             @foreach($auxCidades as $cid)
               <option value="{{ $cid->id }}">{{ $cid->name }}</option>
             @endforeach

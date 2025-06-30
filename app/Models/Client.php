@@ -123,10 +123,10 @@ class Client extends Model
         return $this->belongsTo(User::class, 'user_assigned_id');
     }
 
-    public function clientGroup()
+   /* public function clientGroup()
     {
         return $this->belongsTo(ClientGroup::class, 'client_group_id');
-    }
+    }*/
 
     public function groupSubdivision()
     {
