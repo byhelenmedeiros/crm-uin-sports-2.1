@@ -25,20 +25,94 @@ class ClientController extends Controller
 
         $clients = Client::orderBy('name')->get();
 
-        // Apenas as colunas que queremos na tabela
+           // Eager-load das relações que vamos exibir
+        $items = Client::with([
+        //    'transporte',            // relação transporte
+          //  'modalidadePagamento',   // relação modalidadePagamento
+        ])
+        ->select([
+            'id',
+            'external_id',               // Número
+            'nif',                       // NIF
+            'name',                      // Nome
+            'responsavel_nome',          // Responsável
+            'telefone4',                 // Telefone
+            'transporte_id',             // Transporte
+            'pagamento',                 // Pagamento
+            'modalidade_pagamento_id',   // Modalidade de Pagamento
+            'preco',                     // Preço
+            'desconto_linha',            // Desconto Linha (%)
+            'desconto_global',           // Desconto Global (%)
+            'url',                       // Website
+            'zone_id',                   // Zona
+            'cliente_desde',             // Cliente Desde
+            'limite_credito',            // Limite de Crédito
+            'notas_gerais',              // Notas Gerais
+            'created_at',
+            'updated_at',
+        ])
+        ->orderBy('name')
+        ->get();
+
+        // Definição das colunas para o data-table (field => label)
         $columns = [
-            'external_id'     => 'ID Externo',
-            'name'            => 'Nome',
-            'nif'             => 'NIF',
-            'cliente_desde'   => 'Cliente Desde',
-            'id'              => 'ID',
-            'responsavel_nome' => 'Responsável',
+            'external_id'              => 'Número',
+            'nif'                      => 'NIF',
+            'name'                     => 'Nome',
+            'responsavel_nome'         => 'Responsável',
+            'telefone4'                => 'Telefone',
+            'transporte.external_id'   => 'Transporte (Código)',
+            'transporte.name'          => 'Transporte',
+            'pagamento'                => 'Pagamento',
+            'modalidadePagamento.name' => 'Modalidade Pagto',
+            'preco'                    => 'Preço',
+            'desconto_linha'           => 'Desconto Linha (%)',
+            'desconto_global'          => 'Desconto Global (%)',
+            'url'                      => 'Website',
+            'zone.name'                => 'Zona',
+            'cliente_desde'            => 'Cliente Desde',
+            'limite_credito'           => 'Limite Crédito',
+            'notas_gerais'             => 'Notas Gerais',
+            'created_at'               => 'Criado Em',
+            'updated_at'               => 'Atualizado Em',
+
+
         ];
 
-        return view('clients.index', compact('clients', 'columns'));
+         $search = $request->input('search');
+ $query = Client::query()
+        ->select(['id','external_id','nif','name'])
+        ->when($search, fn($q) => $q->where('name','like',"%{$search}%")
+                                    ->orWhere('external_id','like',"%{$search}%")
+                                    ->orWhere('nif','like',"%{$search}%"))
+        ->orderBy('name');
+
+    $paginated = $query->paginate(15)->withQueryString();
+
+    if ($request->ajax()) {
+        return response()->json($paginated);
     }
 
-
+   return view('clients.index', [
+        'items'   => $paginated,
+        'columns' => [
+            'external_id' => 'Número',
+            'name'        => 'Nome',
+            'nif'         => 'NIF',
+        ],
+        'search'  => $search,
+    ]);
+}
+    /**
+     * Exibe o formulário de criação de um novo cliente.
+     *
+     * Essa página exibe um formulário com os campos necessários para criar um
+     * novo cliente. A página também carrega os registros de tipos de endereços,
+     * grupos de clientes, zonas, vendedores, transportes e pagamentos para
+     * preencher os selects do formulário.
+     *
+     * @return \Illuminate\View\View
+     */
     public function create()
     {
         Log::info("ClientController@create chamada pelo user id: " . auth()->id());
