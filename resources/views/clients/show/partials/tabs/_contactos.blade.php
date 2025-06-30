@@ -1,20 +1,25 @@
-
 <section x-show="activeTab==='contactos'" class="space-y-4">
   <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     {{-- Nome do Responsável --}}
-    <div>
+    <div class="form-control w-full">
       <label class="label"><span class="label-text text-sm">Nome do Responsável</span></label>
-      <div class="input input-sm w-full bg-gray-100">
-        {{ $client->responsavel_nome ?? '—' }}
-      </div>
+      <input
+        type="text"
+        class="input input-sm input-bordered w-full bg-gray-100"
+        value="{{ $client->responsavel_nome ?? '' }}"
+        readonly
+      />
     </div>
 
     {{-- Data de Aniversário --}}
-    <div>
+    <div class="form-control w-full">
       <label class="label"><span class="label-text text-sm">Data de Aniversário</span></label>
-      <div class="input input-sm w-full bg-gray-100">
-        {{ optional($client->data_aniversario)->format('d/m/Y') ?? '—' }}
-      </div>
+      <input
+        type="date"
+        class="input input-sm input-bordered w-full bg-gray-100"
+        value="{{ optional($client->data_aniversario)->format('Y-m-d') ?? '' }}"
+        readonly
+      />
     </div>
   </div>
 
@@ -26,11 +31,14 @@
       'movel1'    => 'Telemóvel 1',
       'movel2'    => 'Telemóvel 2',
     ] as $field => $label)
-      <div>
+      <div class="form-control w-full">
         <label class="label"><span class="label-text text-sm">{{ $label }}</span></label>
-        <div class="input input-sm w-full bg-gray-100">
-          {{ $client->{$field} ?? '—' }}
-        </div>
+        <input
+          type="text"
+          class="input input-sm input-bordered w-full bg-gray-100"
+          value="{{ $client->{$field} ?? '' }}"
+          readonly
+        />
       </div>
     @endforeach
   </div>
