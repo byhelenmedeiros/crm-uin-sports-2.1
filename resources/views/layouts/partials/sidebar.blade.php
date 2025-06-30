@@ -75,7 +75,7 @@
         {{-- Administração --}}
         <a href="{{ route('auxtables.types.index') }}" class="flex items-center px-4 py-2 rounded hover:bg-pink-200">
             <i class="fas fa-cogs w-4 h-4 text-gray-500"></i>
-            <span class="ml-3">Tipos Auxiliares</span>
+            <span class="ml-3">Tabelas Auxiliares</span>
         </a>
 
     </nav>

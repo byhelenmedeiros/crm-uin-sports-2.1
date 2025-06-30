@@ -2,7 +2,6 @@
 
 namespace App\Models\Auxtable;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class AuxPreco extends Model
@@ -11,3 +10,5 @@ class AuxPreco extends Model
 
     protected $fillable = ['name'];
 }
+
+

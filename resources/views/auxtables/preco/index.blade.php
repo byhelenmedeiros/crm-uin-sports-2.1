@@ -2,12 +2,17 @@
 
 @section('content')
   <x-data-table
- 
-    :items="$items"
-    title="Preços"
-    routePrefix="aux.preco"
-    :columns="[
-        ['label' => 'Nome', 'field' => 'name'],
-    ]"
-/>
+      :items="$items"
+      routePrefix="aux.preco"   
+      title="Preços"
+      :columns="[
+   //       ['field'=>'external_id','label'=>'External ID'],
+        ['label' => 'Nome',      'field' => 'name'],
+        ['label' => 'Ordem',     'field' => 'order'],
+        ['label' => 'Ativo',     'field' => 'active'],
+      ]"
+  />
 @endsection
+
+
+ 
