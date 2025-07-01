@@ -1,163 +1,164 @@
-@props([
-  'items',
-  'title',
-  'routePrefix',
-  'columns',
-   'parents',
-])
-
-<section class="w-full bg-base-100 rounded-xl shadow p-2">
-  <div class="flex justify-between items-center mb-2">
-    <h1 class="text-lg font-semibold">{{ $title }}</h1>
-
-    
-
+<section class="w-full bg-base-100 rounded-xl shadow p-4">
+  <div class="flex justify-between items-center mb-4">
+    <h1 class="text-2xl font-bold">{{ $title }}</h1>
   </div>
 
-  {{-- Criação inline --}}
-  <form id="create-form" method="POST" action="{{ route($routePrefix . '.store') }}" style="display: none;">
+  {{-- Formulário de criação oculto --}}
+  <form id="create-form" method="POST" action="{{ route($routePrefix . '.store') }}" class="hidden">
     @csrf
   </form>
 
-  <table class="table table-zebra table-compact w-full border rounded-lg">
+  <table class="table table-zebra w-full border rounded-lg">
     <thead>
       <tr>
-        <th><input type="checkbox" id="select-all"></th>
-        <th class="py-1">ID</th>
+        <th><input type="checkbox" id="select-all" class="checkbox checkbox-sm" /></th>
+        <th class="py-2">ID</th>
         @foreach($columns as $col)
-          <th class="py-1">{{ $col['label'] }}</th>
+          <th class="py-2">{{ $col['label'] }}</th>
         @endforeach
-        <th class="py-1">Ações</th>
+        <th class="py-2">Ações</th>
       </tr>
     </thead>
     <tbody>
-                                    {{-- Linha de criação --}}
-     {{-- Linha de criação inline --}}
-      <tr>
-        <td></td>
-        <td class="py-1">—</td>
+     {{-- Linha de criação full-width --}}
+<tr>
+  {{-- colspan = checkbox + ID + N colunas + Ações --}}
+  <td colspan="{{ 2 + count($columns) + 1 }}" class="p-0">
+    <div class="flex items-center gap-2 bg-base-200 p-3 rounded-lg w-full">
+      {{-- Espaço reservado para checkbox + ID --}}
+      <div class="w-6"></div>
+      <div class="w-6 text-center font-medium">—</div>
 
-  @foreach($columns as $col)
-  @if(in_array($col['field'], [
-       'external_id',
-       'name',
-       'agrup_external_id',
-       'agrup_name',
-    ]))
-    <td class="py-1">
-      <input
-        type="text"
-        name="{{ $col['field'] }}"
-        form="create-form"
-        class="input input-sm w-full"
-        placeholder="{{ $col['label'] }}"
-        @if(in_array($col['field'], ['name','agrup_name'])) required @endif
-      >
-    </td>
-  @else
-    <td class="py-1">—</td>
-  @endif
-@endforeach
-
-
-        <td class="py-1">
-          <button type="submit" form="create-form" class="btn btn-sm btn-success">
-            Salvar
-          </button>
-        </td>
-      </tr>
-      @foreach($items as $item)
-        {{-- Linha de visualização --}}
-        <tr id="view-{{ $item->id }}">
-          <td class="py-1">
+      {{-- Inputs inline, dividindo igualmente --}}
+      @foreach($columns as $col)
+        @if(in_array($col['field'], ['external_id','name','agrup_external_id','agrup_name']))
+          <div class="form-control flex-1">
             <input
-              type="checkbox"
-              class="row-checkbox"
-              name="ids[]"
-              value="{{ $item->id }}"
-              form="mass-delete-form"
-            >
-          </td>
-          <td class="py-1">{{ $item->id }}</td>
+              type="text"
+              name="{{ $col['field'] }}"
+              form="create-form"
+              placeholder="{{ $col['label'] }}"
+              class="input input-bordered input-sm w-full"
+              @if(in_array($col['field'], ['name','agrup_name'])) required @endif
+            />
+          </div>
+        @endif
+      @endforeach
 
-         @foreach($columns as $col)
-    @if($col['field']==='name_parent_id')
-    <td class="py-1">{{ $item->name_parent_id ?? '—' }}</td>
-  @else
-       <td class="py-1">{{ data_get($item, $col['field'], '—') }}</td>
+      {{-- Botão Salvar com ícone FontAwesome --}}
+      <button
+        type="submit"
+        form="create-form"
+        class="btn btn-success btn-sm flex items-center gap-1"
+      >
+        <i class="fa-solid fa-save"></i>
+        Salvar
+      </button>
+    </div>
+  </td>
+</tr>
 
-  @endif
-@endforeach
 
-          <td class="flex gap-1 py-1">
-            <button type="button" class="btn btn-xs" onclick="window.startEdit({{ $item->id }})">Editar</button>
-            <form
-              method="POST"
-              action="{{ route($routePrefix . '.destroy', $item->id) }}"
-              onsubmit="return confirm('Confirma exclusão do registro #{{ $item->id }}?')"
-            >
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-xs btn-error">Excluir</button>
-            </form>
-          </td>
-        </tr>
-
-        {{-- Formulário de edição inline --}}
-        <form
-          id="edit-form-{{ $item->id }}"
-          method="POST"
-          action="{{ route($routePrefix . '.update', $item->id) }}"
-          style="display:none;"
-        >
+      {{-- Linhas de dados --}}
+      @foreach($items as $item)
+        {{-- Form de update oculto --}}
+        <form id="update-form-{{ $item->id }}" method="POST"
+              action="{{ route($routePrefix . '.update', $item->id) }}"
+              class="hidden">
           @csrf
           @method('PUT')
         </form>
+
+        <tr x-data="{ editing: false }">
+          {{-- Modo View --}}
+          <template x-if="!editing">
+            <tr>
+              <td class="py-2">
+                <input type="checkbox" class="checkbox checkbox-sm row-checkbox"
+                       name="ids[]" value="{{ $item->id }}"
+                       form="mass-delete-form" />
+              </td>
+              <td class="py-2">{{ $item->id }}</td>
+              @foreach($columns as $col)
+                <td class="py-2">{{ data_get($item, $col['field'], '—') }}</td>
+              @endforeach
+              <td class="py-2 space-x-1">
+                <button @click="editing = true"
+                        class="btn btn-xs btn-outline">Editar</button>
+                <form method="POST"
+                      action="{{ route($routePrefix . '.destroy', $item->id) }}"
+                      class="inline-block"
+                      onsubmit="return confirm('Excluir #{{ $item->id }}?')">
+                  @csrf
+                  @method('DELETE')
+                  <button type="submit" class="btn btn-xs btn-error">✕</button>
+                </form>
+              </td>
+            </tr>
+          </template>
+
+          {{-- Modo Edit --}}
+          <template x-if="editing">
+            <tr>
+              <td class="py-2"></td>
+              <td class="py-2">{{ $item->id }}</td>
+              @foreach($columns as $col)
+                @if(in_array($col['field'], ['external_id','name','agrup_external_id','agrup_name']))
+                  <td class="py-2">
+                    <input
+                      type="text"
+                      name="{{ $col['field'] }}"
+                      form="update-form-{{ $item->id }}"
+                      value="{{ data_get($item, $col['field'], '') }}"
+                      placeholder="{{ $col['label'] }}"
+                      class="input input-bordered input-sm w-full"
+                      @if(in_array($col['field'], ['name','agrup_name'])) required @endif
+                    />
+                  </td>
+                @else
+                  <td class="py-2">{{ data_get($item, $col['field'], '—') }}</td>
+                @endif
+              @endforeach
+              <td class="py-2 space-x-1">
+                <button type="submit"
+                        form="update-form-{{ $item->id }}"
+                        class="btn btn-xs btn-success">
+                  ✓
+                </button>
+                <button type="button"
+                        @click="editing = false"
+                        class="btn btn-xs btn-ghost">
+                  ✕
+                </button>
+              </td>
+            </tr>
+          </template>
+        </tr>
       @endforeach
     </tbody>
   </table>
 
-  {{-- Formulário para massDestroy --}}
-  <form
-    id="mass-delete-form"
-    method="POST"
-    action="{{ route($routePrefix . '.massDestroy') }}"
-    style="display: none;"
-  >
+  {{-- Exclusão em massa --}}
+  <form id="mass-delete-form" method="POST"
+        action="{{ route($routePrefix . '.massDestroy') }}" class="hidden">
     @csrf
   </form>
 
-  <div class="mt-2 text-right">
-    <button
-      type="submit"
-      form="mass-delete-form"
-      class="btn btn-sm btn-error"
-      onclick="return confirm('Excluir todos os selecionados?')"
-    >
+  <div class="mt-4 text-right">
+    <button type="submit" form="mass-delete-form"
+            class="btn btn-sm btn-error"
+            onclick="return confirm('Excluir selecionados?')">
       Excluir selecionados
     </button>
   </div>
-
-
-  
 </section>
 
 @push('scripts')
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('select-all').addEventListener('change', function() {
-      document.querySelectorAll('.row-checkbox').forEach(cb => cb.checked = this.checked);
+  document.getElementById('select-all')
+    .addEventListener('change', function() {
+      document.querySelectorAll('.row-checkbox')
+        .forEach(cb => cb.checked = this.checked);
     });
-  });
-  
-  window.startEdit = function(id) {
-    document.getElementById(`view-${id}`).classList.add('hidden');
-    document.getElementById(`edit-${id}`).classList.remove('hidden');
-  };
-  
-  window.cancelEdit = function(id) {
-    document.getElementById(`edit-${id}`).classList.add('hidden');
-    document.getElementById(`view-${id}`).classList.remove('hidden');
-  };
 </script>
 @endpush
