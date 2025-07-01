@@ -196,12 +196,22 @@ public function index(Request $request)
 
     public function show($id)
     {
-        $client = Client::with([
-            'addresses.addressType',
-            //'clientGroup',
-            'groupSubdivision',
+        $client = Client::with('addresses.addressType')->findOrFail($id);
 
-        ])->findOrFail($id);
+    // Serializa cada endereço para JSON com os campos certos:
+    $addresses = $client->addresses->map(fn($addr) => [
+        'id'         => $addr->id,
+        'type'       => $addr->addressType->name,
+        'externalId' => $addr->external_id,
+        'address'    => $addr->address,
+        'line2'      => $addr->line2,
+        'line3'      => $addr->line3,
+        'code'       => $addr->code,
+        'country'    => optional($addr->country)->name,
+        'state'      => optional($addr->state)->name,
+        'city'       => optional($addr->city)->name,
+        'createdAt'  => $addr->created_at->format('d/m/Y'),
+    ]);
 
         $client->load([
             'addresses.addressType',
@@ -220,7 +230,7 @@ public function index(Request $request)
 
         ]);
 
-        return view('clients.show.showall', compact('client'));
+        return view('clients.show.showall', compact('client', 'addresses'));
     }
 
     public function details($id)
@@ -262,4 +272,30 @@ public function index(Request $request)
             ->route('clients.index')
             ->with('success', 'Cliente excluído com sucesso!');
     }
+
+   public function update(Request $request, Client $client)
+{
+    
+    $validated = $request->validate([
+        'external_id'             => 'nullable|string|max:255',
+        'nif'                     => 'nullable|string|max:20',
+        'name'                    => 'required|string|max:255',
+        'telefone4'               => 'nullable|string|max:20',
+        'transporte_id'           => 'nullable|exists:aux_transporte,id',
+        'pagamento'               => 'nullable|string|max:255',
+        'modalidade_pagamento_id' => 'nullable|exists:aux_modalidade_pagamento,id',
+        'preco'                   => 'nullable|numeric',
+        'desconto_linha'          => 'nullable|numeric|min:0',
+        'desconto_global'         => 'nullable|numeric|min:0',
+        'url'                     => 'nullable|url|max:255',
+    ]);
+
+    $client->update($validated);
+
+    return response()->json([
+        'message' => 'Cliente atualizado com sucesso',
+        'client'  => $client->only(array_keys($validated))
+    ]);
+}
+
 }

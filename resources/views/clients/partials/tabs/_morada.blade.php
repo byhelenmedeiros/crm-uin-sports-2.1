@@ -140,15 +140,16 @@
           <label class="label"><span class="label-text text-sm">Código Postal</span></label>
           <input type="text" name="addresses[__INDEX__][code]" class="input input-sm input-bordered w-full" />
         </div>
-       
-        <div class="form-control">
-          <label class="label"><span class="label-text text-sm">País</span></label>
-          <select name="addresses[__INDEX__][country_id]" class="select select-sm w-full">
+       <div class="form-control">
+          <label class="label"><span class="label-text text-sm">Localidade</span></label>
+          <select name="addresses[__INDEX__][city_id]" class="select select-sm w-full">
             <option value="">Selecione</option>
-            @foreach($auxPais as $pais)
-              <option value="{{ $pais->id }}">{{ $pais->name }}</option>
+            @foreach($auxCidades as $cid)
+              <option value="{{ $cid->id }}">{{ $cid->name }}</option>
             @endforeach
           </select>
+      
+
         </div>
         <div class="form-control">
           <label class="label"><span class="label-text text-sm">Distrito</span></label>
@@ -159,15 +160,16 @@
             @endforeach
           </select>
         </div>
-        <div class="form-control">
-          <label class="label"><span class="label-text text-sm">Cidade</span></label>
-          <select name="addresses[__INDEX__][city_id]" class="select select-sm w-full">
+        
+                <div class="form-control">
+          <label class="label"><span class="label-text text-sm">País</span></label>
+          <select name="addresses[__INDEX__][country_id]" class="select select-sm w-full">
             <option value="">Selecione</option>
-            @foreach($auxCidades as $cid)
-              <option value="{{ $cid->id }}">{{ $cid->name }}</option>
+            @foreach($auxPais as $pais)
+              <option value="{{ $pais->id }}">{{ $pais->name }}</option>
             @endforeach
           </select>
-        </div>
+            </div>
       </div>
       <div class="flex justify-end mt-2">
         <button type="button" onclick="document.getElementById('address-__INDEX__').remove()" class="btn btn-xs btn-error">
